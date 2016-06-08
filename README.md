@@ -14,11 +14,14 @@ AppStore: https://appsto.re/cn/QH8ocb.i
 
 iOS版本的 **野鸡医院** 底层使用了 `ptyy` 作为底层查询引擎:
 
-![](./ios-app/yjyy/misc/screenshots/yjyy-ios.png)
+![](./ios-app/yjyy-ruby/misc/screenshots/yjyy-ios.png)
 
 扫码安装:
 
-![](./ios-app/yjyy/misc/appstore-yjyy.png)
+![](./ios-app/yjyy-ruby/misc/appstore-yjyy.png)
+
+App开发教程: [使用Go语言开发iOS应用(Swift版)](http://www.ituring.com.cn/article/215762)
+
 
 ## 安装Go语言包
 

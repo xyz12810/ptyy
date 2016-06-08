@@ -9,6 +9,8 @@ class MainViewController: UIViewController, UISearchBarDelegate, UITableViewDele
 	@IBOutlet weak var navigationBar: UINavigationBar!
 	@IBOutlet weak var searchBar: UISearchBar!
 	@IBOutlet weak var tableView: UITableView!
+	
+	var refreshControl = UIRefreshControl()
 
 	var db:DataEngin = DataEngin()
 	var results = [[String]]()
@@ -29,6 +31,9 @@ class MainViewController: UIViewController, UISearchBarDelegate, UITableViewDele
 		self.tableView.tableFooterView = footerBar
 		self.tableView.dataSource = self
 		self.tableView.delegate = self
+		
+		self.refreshControl.addTarget(self, action: #selector(MainViewController.refreshData), forControlEvents: UIControlEvents.ValueChanged)
+		self.tableView.addSubview(self.refreshControl)
 
 		// 注册TableViewCell
 		self.tableView.registerClass(MyCustomMenuCell.self, forCellReuseIdentifier: MyCustomMenuCell.ReuseIdentifier)
@@ -37,6 +42,12 @@ class MainViewController: UIViewController, UISearchBarDelegate, UITableViewDele
 		self.searchBarSearchButtonClicked(searchBar)
     }
 
+	// 刷新数据
+	func refreshData() {
+		NSThread.sleepForTimeInterval(1.0)
+		self.refreshControl.endRefreshing()
+	}
+	
 	// 分享App
 	@IBAction func onShareApp(sender: UIBarButtonItem) {
 		let utlTilte = "野鸡医院 - 莆田系医院查询"
@@ -46,6 +57,12 @@ class MainViewController: UIViewController, UISearchBarDelegate, UITableViewDele
 
 		let activity = UIActivityViewController(activityItems: [utlTilte, appStoreUrl!], applicationActivities: nil)
 		self.presentViewController(activity, animated: true, completion: nil)
+
+		// 修复 iPad 上崩溃问题
+		if #available(iOS 8.0, *) {
+    		let presentationController = activity.popoverPresentationController
+    		presentationController?.sourceView = view
+		}
 	}
 
 	// 关于按钮
@@ -60,7 +77,7 @@ class MainViewController: UIViewController, UISearchBarDelegate, UITableViewDele
 
 		if #available(iOS 8.0, *) {
 			let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-			
+
 			let githubAction = UIAlertAction(title: "Github", style: UIAlertActionStyle.Default) { (result : UIAlertAction) -> Void in
 				let urlStr = "https://github.com/chai2010/ptyy"
 				let githubUrl = NSURL(string: urlStr.stringByAddingPercentEncodingWithAllowedCharacters(
